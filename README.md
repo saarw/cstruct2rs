@@ -8,6 +8,7 @@
 </p>
 
 ### How to run
+This program revealed some bugs in Rusts compiler, so it may need Rust 1.3 nightly to build.
 <li/>Compile by running <b>cargo build --release</b><br/>
 <li/>Run <b>target/release/cstruct2rs input-file output-file</b><br/>
 (for instance: target/release/cstruct2rs.exe example/libraw_types.h example/libraw_types.rs )
