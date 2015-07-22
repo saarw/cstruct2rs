@@ -1,0 +1,9 @@
+[package]
+
+name = "cstruct2rs"
+version = "0.0.1"
+authors = [ "William Saar <william@saar.se>" ]
+
+[[bin]]
+
+name = "cstruct2rs"
