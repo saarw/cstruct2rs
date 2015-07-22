@@ -3,8 +3,9 @@
 
 <p>As part of my project MediaOrgan.com, I interface with RAW-processing library LibRaw, a C library that uses massive amounts of structs with many fields. The aim of the utility is to remove most of the manual labor of converting such structs to Rust format.</p>
 
-<p>My primary source of information about C to Rust structs comes from this article
-<a href="http://siciarz.net/ffi-rust-writing-bindings-libcpuid/"/>FFI in Rust - writing bindings for libcpuid</a>
+<p>My primary source of information about C to Rust structs comes from this article<br/>
+<a href="http://siciarz.net/ffi-rust-writing-bindings-libcpuid/">FFI in Rust - writing bindings for libcpuid</a>
+</p>
 
 ### How to run
 <li/>Compile by running <b>cargo build --release</b><br/>
