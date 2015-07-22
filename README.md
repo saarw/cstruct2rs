@@ -1,5 +1,7 @@
 # cstruct2rs
-A utility to help convert C structs to Rust structs for integration over FFI. As part of my project MediaOrgan.com, I interface with RAW-processing library LibRaw, a C library that uses lots of structs. This utility is meant to help convert most of those structs to Rust format.
+<p>A utility to help convert C structs to Rust structs for integration over FFI.</p>
+
+<p>As part of my project MediaOrgan.com, I interface with RAW-processing library LibRaw, a C library that uses massive amounts of structs with many fields. I hope this utility will help convert most of those structs to Rust format.</p>
 
 ### How to run
 <li/>Compile by running <b>cargo build --release</b><br/>
