@@ -9,7 +9,7 @@
 (for instance: target/release/cstruct2rs.exe example/libraw_types.h example/libraw_types.rs )
 
 ### Status and issues
-<p>First-commit stage. Have not tried to actually use the generated output for anything yet, so it is probably all wrong.</p>
+<p>First-commit status. Have not tried to actually use the generated output for anything yet, so it is probably all wrong.</p>
 <p>The example folder holds an input example file from LibRaw and the generated output from cstruct2rs. Obvious issues are:</p>
 <li/>Does not handle const fields.
 <li/>Does not handle enum fields
