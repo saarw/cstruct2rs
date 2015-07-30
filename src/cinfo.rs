@@ -28,7 +28,7 @@ impl<'a> Display for CStructInfo<'a> {
 		// let mut res = 
 		write!(f, "#[repr(C)]\npub struct {} {{\n", self.name).ok().expect("Write failed!");		
 		for &(ref field_type, ref field_name) in self.fields.iter() {
-			write!(f, "\tpub {}: {};\n", field_name, field_type).ok().expect("Write failed!");
+			write!(f, "\tpub {}: {},\n", field_name, field_type).ok().expect("Write failed!");
 		}
 		write!(f, "}}\n")		
 	}
@@ -93,7 +93,9 @@ fn extract_name_and_array_pointer_type(base_type: &str, name: String) -> (String
 	// Find out if the variable is a pointer	
 	if let Some(ptr_start) = name.find("*") {
 		let mut buf = String::new();
-		buf.push_str("*");
+		for _ in 0..name.chars().map(|c: char| match c { '*' => 1, _ => 0}).fold(0, |acc, val| acc + val) {			
+			buf.push_str("*const ");
+		}
 		buf.push_str(base_type);
 		full_type = Cow::Owned(buf);
 		if let Some(name_terminator) = name[ptr_start..].find(|c: char| c.is_whitespace() || c == ')') {			
@@ -128,15 +130,15 @@ fn extract_name_and_array_pointer_type(base_type: &str, name: String) -> (String
 
 #[test]
 fn test_extract_name_and_array_pointer_type() {	
-	assert_eq!(extract_name_and_array_pointer_type("int", "hej".to_string()).0, "int");
-	assert_eq!(extract_name_and_array_pointer_type("int", "hej".to_string()).1, "hej");
+	assert_eq!(extract_name_and_array_pointer_type("c_int", "hej".to_string()).0, "c_int");
+	assert_eq!(extract_name_and_array_pointer_type("c_int", "hej".to_string()).1, "hej");
 	
-	let (rust_type, name) = extract_name_and_array_pointer_type("int", "*hej[12][23]".to_string());
-	assert_eq!(rust_type, "[[*int; 23]; 12]");
+	let (rust_type, name) = extract_name_and_array_pointer_type("c_int", "*hej[12][23]".to_string());
+	assert_eq!(rust_type, "[[*const c_int; 23]; 12]");
 	assert_eq!(name, "hej"); 
 	
 	let (rust_type, name) = extract_name_and_array_pointer_type("c_ushort", "(*color4_image)[4]".to_string());
-	assert_eq!(rust_type, "[*c_ushort; 4]");
+	assert_eq!(rust_type, "[*const c_ushort; 4]");
 	assert_eq!(name, "color4_image"); 	
 }
 
@@ -166,7 +168,7 @@ fn test_parse_fields() {
 	encountered_types = HashSet::new();
 	type_name = parse_fields("unsigned *i", &mut encountered_types);
 	assert_eq!(encountered_types.iter().next().unwrap(), "c_uint");		
-	assert_eq!(type_name[0].0, "*c_uint");
+	assert_eq!(type_name[0].0, "*const c_uint");
 	assert_eq!(type_name[0].1, "i");
 	
 	encountered_types = HashSet::new();
@@ -174,12 +176,12 @@ fn test_parse_fields() {
 	assert_eq!(encountered_types.iter().next().unwrap(), "c_ulong");		
 	assert_eq!(type_name[0].0, "c_ulong");
 	assert_eq!(type_name[0].1, "j");
-	assert_eq!(type_name[1].0, "*c_ulong");
+	assert_eq!(type_name[1].0, "*const c_ulong");
 	assert_eq!(type_name[1].1, "i");
 	
 	encountered_types = HashSet::new();
 	type_name = parse_fields("ushort        (*color4_image)[4]", &mut encountered_types);
 	assert_eq!(encountered_types.iter().next().unwrap(), "c_ushort");	
-	assert_eq!(type_name[0].0, "[*c_ushort; 4]");
+	assert_eq!(type_name[0].0, "[*const c_ushort; 4]");
 	assert_eq!(type_name[0].1, "color4_image");
 }
