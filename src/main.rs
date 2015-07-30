@@ -109,7 +109,7 @@ fn main() {
     let struct_infos = find_struct_blocks(&comment_free_buf).iter().map(|&(name, block)| CStructInfo::new(&name, &block)).collect::<Vec<CStructInfo>>();
     
     let all_used_types = struct_infos.iter().flat_map(|ref struct_info| struct_info.used_types.iter()).collect::<HashSet<&String>>();
-    let mut use_statement = "use std::libc::{".to_string();
+    let mut use_statement = "use libc::{".to_string();
     all_used_types.iter().fold(true, |is_first, type_name| {
     		if !is_first {
     			use_statement.push_str(", ");
